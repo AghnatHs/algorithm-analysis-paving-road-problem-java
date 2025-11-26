@@ -1,69 +1,6 @@
-import java.util.Arrays;
-
-class VillageEdge implements Comparable<VillageEdge> {
-  Character from;
-  Character to;
-  int distance;
-  int value;
-
-  public VillageEdge(Character v1, Character v2, int weight, int value) {
-    this.from = v1;
-    this.to = v2;
-    this.distance = weight;
-    this.value = value;
-  }
-
-  public float getValuePerCost() {
-    return (float) value / getPriceToPave();
-  }
-
-  public int getPriceToPave() {
-    return (int) distance * VillagePaving.RP_PER_METER;
-  }
-
-  @Override
-  public int compareTo(VillageEdge other) {
-    return Integer.compare(this.distance, other.distance);
-  }
-
-  @Override
-  public String toString() {
-    return "Edge < " +
-        "from = " + from +
-        ", to = " + to +
-        ", distance = " + distance +
-        ", value = " + value +
-        ", cost = " + this.getPriceToPave() +
-        ", value/cost = " + this.getValuePerCost() +
-        " >";
-
-  }
-}
-
-class Graph {
-  int villagesCount;
-  int roadsCount;
-  VillageEdge[] villages;
-
-  public Graph(int v, int e) {
-    this.villagesCount = v;
-    this.roadsCount = e;
-    this.villages = new VillageEdge[e];
-  }
-
-  public void sortEdgesByValueCost() {
-    Arrays.sort(this.villages, (a, b) -> {
-      float r1 = a.getValuePerCost();
-      float r2 = b.getValuePerCost();
-      if (r1 < r2)
-        return 1;
-      else if (r1 > r2)
-        return -1;
-      else
-        return 0;
-    });
-  }
-}
+import interfaces.IOptimizer;
+import model.Graph;
+import model.VillageEdge;
 
 public class VillagePaving {
   public static final int RP_PER_METER = 45;
@@ -99,15 +36,13 @@ public class VillagePaving {
     area.villages[21] = new VillageEdge('M', 'O', 11, 24);
     area.villages[22] = new VillageEdge('M', 'Q', 10, 43);
 
-    VillagePavingOptimizer optimizer = new VillagePavingOptimizer(area, budget);
+    IOptimizer optimizer = new GreedyByRatioValueOptimizer(area, budget);
 
     // Run optimization
     optimizer.optimize();
 
     // Show visualization with GraphStream
     System.out.println("\n=== Opening Graph Visualization ===");
-    System.out.println("Close the visualization window to exit the program.");
-
     GraphStreamVisualizer.showSolutionComparison(area, optimizer.getPavedRoads(), optimizer.getSummaryContext(),
         optimizer.getInitialBudget(), optimizer.getRemainingBudget());
   }

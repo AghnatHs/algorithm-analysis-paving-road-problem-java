@@ -2,14 +2,19 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-class VillagePavingOptimizer {
+import interfaces.IOptimizer;
+import model.Graph;
+import model.SummaryContext;
+import model.VillageEdge;
+
+class GreedyByRatioValueOptimizer implements IOptimizer {
   private int budget;
   private int initialBudget;
   private Graph graph;
   private List<VillageEdge> pavedRoads;
   private SummaryContext summaryContext;
 
-  public VillagePavingOptimizer(Graph graph, int budget) {
+  public GreedyByRatioValueOptimizer(Graph graph, int budget) {
     this.graph = graph;
     this.budget = budget;
     this.initialBudget = budget;

@@ -17,6 +17,10 @@ import org.graphstream.graph.implementations.SingleGraph;
 import org.graphstream.ui.swing_viewer.ViewPanel;
 import org.graphstream.ui.view.Viewer;
 
+import model.Graph;
+import model.SummaryContext;
+import model.VillageEdge;
+
 class GraphStreamVisualizer {
   private static final String STYLESHEET = "node {" +
       "  size: 30px;" +
