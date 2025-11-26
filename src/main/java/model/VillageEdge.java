@@ -1,6 +1,8 @@
 package model;
 
 public class VillageEdge implements Comparable<VillageEdge> {
+  public static final int RP_PER_METER = 40;
+
   public Character from;
   public Character to;
   public int distance;
@@ -18,7 +20,7 @@ public class VillageEdge implements Comparable<VillageEdge> {
   }
 
   public int getPriceToPave() {
-    return (int) distance * 45; // RP_PER_METER constant
+    return (int) distance * RP_PER_METER;
   }
 
   @Override

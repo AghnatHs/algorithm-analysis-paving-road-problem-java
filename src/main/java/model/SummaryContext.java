@@ -7,7 +7,7 @@ public class SummaryContext {
   public int initialValue;
   public float percentageValueGained;
 
-  public int costPerMeter = 45; // RP_PER_METER constant
+  public int costPerMeter = VillageEdge.RP_PER_METER;
 
   public SummaryContext(int usedBudget, float percentageUsed, int valueGained, int initialValue,
       float percentageValueGained) {
