@@ -101,9 +101,27 @@ class VillagePavingOptimizer {
     }
 
     System.out.println("-----------------------");
+    int usedBudget = initialBudget - budget;
+    int percentageUsed = (usedBudget * 100) / initialBudget;
+
+    int valueGained = pavedRoads.stream().mapToInt(e -> e.value).sum();
+    int initialValue = Arrays.stream(graph.villages).mapToInt(e -> e.value).sum();
+    int percentageValueGained = (valueGained * 100) / initialValue;
+
+    System.out.println("----- Budget Summary -----");
+    System.out.println("Initial Budget: Rp " + String.format("%,d", initialBudget));
+    System.out.println("Budget Used: Rp " + String.format("%,d", usedBudget) +
+        " (" + percentageUsed + "%)");
     System.out.println("Remaining Budget: Rp " + String.format("%,d", budget));
-    System.out.println("Total Value Gained: " +
-        pavedRoads.stream().mapToInt(e -> e.value).sum());
+    System.out.println();
+    System.out.println("----- Value Summary -----");
+    System.out.println("Maximum Value: " +
+        initialValue);
+    System.out.println("Value Gained: " +
+        valueGained);
+    System.out.println("Percentage Value Gained: " +
+        percentageValueGained + "%");
+    System.out.println("-----------------------");
   }
 
   public List<VillageEdge> getPavedRoads() {
