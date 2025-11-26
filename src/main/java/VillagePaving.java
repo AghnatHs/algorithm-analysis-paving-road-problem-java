@@ -1,6 +1,4 @@
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 class VillageEdge implements Comparable<VillageEdge> {
   Character from;
@@ -67,84 +65,14 @@ class Graph {
   }
 }
 
-class VillagePavingOptimizer {
-  private int budget;
-  private int initialBudget;
-  private Graph graph;
-  private List<VillageEdge> pavedRoads;
-
-  public VillagePavingOptimizer(Graph graph, int budget) {
-    this.graph = graph;
-    this.budget = budget;
-    this.initialBudget = budget;
-    this.pavedRoads = new ArrayList<>();
-  }
-
-  public void optimize() {
-    System.out.println("----- Optimization Result -----");
-    System.out.println("Initial Budget: Rp " + String.format("%,d", this.budget));
-
-    pavedRoads.clear();
-    graph.sortEdgesByValueCost();
-
-    for (VillageEdge edge : graph.villages) {
-      int cost = edge.getPriceToPave();
-      if (cost <= budget) {
-        budget -= cost;
-        pavedRoads.add(edge);
-      }
-    }
-
-    System.out.println("Paved Roads:");
-    for (VillageEdge paved : pavedRoads) {
-      System.out.println(paved);
-    }
-
-    System.out.println("-----------------------");
-    int usedBudget = initialBudget - budget;
-    int percentageUsed = (usedBudget * 100) / initialBudget;
-
-    int valueGained = pavedRoads.stream().mapToInt(e -> e.value).sum();
-    int initialValue = Arrays.stream(graph.villages).mapToInt(e -> e.value).sum();
-    int percentageValueGained = (valueGained * 100) / initialValue;
-
-    System.out.println("----- Budget Summary -----");
-    System.out.println("Initial Budget: Rp " + String.format("%,d", initialBudget));
-    System.out.println("Budget Used: Rp " + String.format("%,d", usedBudget) +
-        " (" + percentageUsed + "%)");
-    System.out.println("Remaining Budget: Rp " + String.format("%,d", budget));
-    System.out.println();
-    System.out.println("----- Value Summary -----");
-    System.out.println("Maximum Value: " +
-        initialValue);
-    System.out.println("Value Gained: " +
-        valueGained);
-    System.out.println("Percentage Value Gained: " +
-        percentageValueGained + "%");
-    System.out.println("-----------------------");
-  }
-
-  public List<VillageEdge> getPavedRoads() {
-    return pavedRoads;
-  }
-
-  public int getRemainingBudget() {
-    return budget;
-  }
-
-  public int getInitialBudget() {
-    return initialBudget;
-  }
-}
-
 public class VillagePaving {
-  public static final int RP_PER_METER = 2000;
+  public static final int RP_PER_METER = 45;
 
   public static void main(String[] args) {
     int V = 18;
     int E = 23;
 
-    int budget = 40000;
+    int budget = 1_500;
     Graph area = new Graph(V, E);
 
     area.villages[0] = new VillageEdge('P', 'A', 5, 80);
@@ -180,6 +108,7 @@ public class VillagePaving {
     System.out.println("\n=== Opening Graph Visualization ===");
     System.out.println("Close the visualization window to exit the program.");
 
-    GraphStreamVisualizer.showSolutionComparison(area, optimizer.getPavedRoads());
+    GraphStreamVisualizer.showSolutionComparison(area, optimizer.getPavedRoads(), optimizer.getSummaryContext(),
+        optimizer.getInitialBudget(), optimizer.getRemainingBudget());
   }
 }
